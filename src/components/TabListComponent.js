@@ -40,14 +40,14 @@ function TabListComponent({ currentTabIndex, children }) {
   };
 
   useEffect(() => {
+    if (!scrollbarRef.current) return;
+
     // This useEffect for scroll to tab
-    if (scrollbarRef.current) {
-      const selectedElem = scrollbarRef.current.children[currentTabIndex];
-      if (selectedElem) {
-        scroll(
-          selectedElem.offsetLeft - scrollbarRef.current.offsetLeft - scrollSize
-        );
-      }
+    const selectedElem = scrollbarRef.current.children[currentTabIndex];
+    if (selectedElem) {
+      scroll(
+        selectedElem.offsetLeft - scrollbarRef.current.offsetLeft - scrollSize
+      );
     }
   }, [currentTabIndex, scroll]);
 
@@ -79,11 +79,11 @@ function TabListComponent({ currentTabIndex, children }) {
   }, []);
 
   useEffect(() => {
-    const onResize = (event) => {
-      if (scrollbarRef.current) {
-        const { clientWidth, scrollWidth } = scrollbarRef.current;
-        setScrollable(clientWidth < scrollWidth);
-      }
+    if (!scrollbarRef.current) return;
+
+    const onResize = () => {
+      const { clientWidth, scrollWidth } = scrollbarRef.current;
+      setScrollable(clientWidth < scrollWidth);
     };
 
     onResize();
